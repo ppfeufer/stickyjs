@@ -7,9 +7,6 @@
 package.json export-ignore
 package-lock.json export-ignore
 
-# readme files
-README.md export-ignore
-
 # other files
 .editorconfig export-ignore
 .make export-ignore
