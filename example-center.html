@@ -1,42 +1,66 @@
-<!doctype html>
-<html>
-<head>
-  <title>Sticky Plugin</title>
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-  <script type="text/javascript" src="jquery.sticky.js"></script>
-  <script>
-    $(window).load(function(){
-      $("#sticker").sticky({ topSpacing: 0, center:true, className:"hey" });
-    });
-  </script>
-  <style>
-    body {
-      height: 10000px;
-      padding: 0;
-      margin: 0;
-    }
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Sticky Plugin</title>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="></script>
+        <script src="stickyjs.min.js"></script>
+        <script>
+            $(document).ready(() => {
+                $('#sticker').sticky({
+                    topSpacing: 0,
+                    center: true,
+                    className: 'hey'
+                });
+            });
+        </script>
 
-    #sticker {
-      background: #bada55;
-      color: white;
-      width: 300px;
-      font-family: Droid Sans;
-      font-size: 40px;
-      line-height: 1.6em;
-      font-weight: bold;
-      text-align: center;
-      padding: 20px;
-      margin: 0 auto;
-      text-shadow: 0 1px 1px rgba(0,0,0,.2);
-      border-radius: 50px;
-    }
-  </style>
-</head>
-<body>
-  <p>This is test this is text this is text at the top.</p>
-  <div id="sticker">
-    <p>This is the sticky thingy that is really cool.</p>
-  </div>
-  <p>This is test this is text this is text at the bottom.</p>
-</body>
+        <style>
+            body {
+                height: 10000px;
+                margin: 0;
+                padding: 0;
+            }
+
+            #sticker {
+                background: rgb(186 218 85);
+                border-radius: 50px;
+                color: white;
+                font-family: Droid Sans, sans-serif;
+                font-size: 40px;
+                font-weight: bold;
+                line-height: 1.6em;
+                margin: 0 auto;
+                padding: 20px;
+                text-align: center;
+                text-shadow: 0 1px 1px rgb(0 0 0 / 20%);
+                width: 300px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
+            ullamcorper mattis sapien, sit amet dictum enim fermentum ut. Suspendisse
+            vestibulum maximus mollis. Curabitur lorem ex, tempus nec quam id,
+            sollicitudin pharetra turpis. Nunc ornare leo sed interdum auctor. Cras
+            gravida arcu quis metus bibendum, quis tempor quam viverra. Nam vulputate
+            arcu quis tortor malesuada, non tincidunt arcu sollicitudin. Nullam ut
+            pharetra ligula.
+        </p>
+
+        <div id="sticker">
+            <p>This is the sticky thingy that is really cool.</p>
+        </div>
+
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
+            ullamcorper mattis sapien, sit amet dictum enim fermentum ut. Suspendisse
+            vestibulum maximus mollis. Curabitur lorem ex, tempus nec quam id,
+            sollicitudin pharetra turpis. Nunc ornare leo sed interdum auctor. Cras
+            gravida arcu quis metus bibendum, quis tempor quam viverra. Nam vulputate
+            arcu quis tortor malesuada, non tincidunt arcu sollicitudin. Nullam ut
+            pharetra ligula.
+        </p>
+    </body>
 </html>

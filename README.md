@@ -1,43 +1,80 @@
-# Sticky
+# StickyJS
 
 Sticky is a jQuery plugin that gives you the ability to make any element on your page always stay visible.
 
-## Sticky in brief
+______________________________________________________________________
+
+<!-- mdformat-toc start --slug=github --maxlevel=6 --minlevel=2 -->
+
+- [A Bit of History](#a-bit-of-history)
+- [StickyJS in Brief](#stickyjs-in-brief)
+- [Usage](#usage)
+  - [Include jQuery and StickyJS](#include-jquery-and-stickyjs)
+  - [Call StickyJS](#call-stickyjs)
+- [Options](#options)
+- [Methods](#methods)
+- [Events](#events)
+
+<!-- mdformat-toc end -->
+
+______________________________________________________________________
+
+## A Bit of History<a name="a-bit-of-history"></a>
+
+This plugin was originally created by Anthony Garand in 2011 (as far as I could find
+out), [see Repository here](https://github.com/garand/sticky), but the last official
+release was in October 2015 ([v1.0.3](https://github.com/garand/sticky/releases/tag/1.0.3)).
+In September 2022 the project was archived, and the repository was made read-only,
+and the plugin has not been maintained for several years.
+
+Since this is a nice lib, which I use in several projects, I decided to fork it and
+modernize it a bit, and make it available for the community. The original code is still
+there, but I have made some changes to make it more modern and compatible with the latest
+versions of jQuery.
+
+## StickyJS in Brief<a name="stickyjs-in-brief"></a>
 
 This is how it works:
 
 - When the target element is about to be hidden, the plugin will add the class `className` to it (and to a wrapper added as its parent), set it to `position: fixed` and calculate its new `top`, based on the element's height, the page height and the `topSpacing` and `bottomSpacing` options.
-- That's it. 
+- That's it.
+
 In some cases you might need to set a fixed width to your element when it is "sticked".
 But by default (`widthFromWrapper == true`) sticky updates elements's width to the wrapper's width.
 Check the `example-*.html` files for some examples.
 
-## Usage
+## Usage<a name="usage"></a>
 
-- Include jQuery & Sticky.
-- Call Sticky.
-
-```html
-<script src="jquery.js"></script>
-<script src="jquery.sticky.js"></script>
-<script>
-  $(document).ready(function(){
-    $("#sticker").sticky({topSpacing:0});
-  });
-</script>
-```
-
-- Edit your css to position the elements (check the examples in `example-*.html`).
-
-- To unstick an object
+### Include jQuery and StickyJS<a name="include-jquery-and-stickyjs"></a>
 
 ```html
-<script>
-  $("#sticker").unstick();
-</script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="></script>
+<script src="stickyjs.min.js"></script>
 ```
 
-## Options
+### Call StickyJS<a name="call-stickyjs"></a>
+
+```javascript
+$(document).ready(() => {
+    const elementSticky = $('#sticker');
+
+    elementSticky.sticky({
+        topSpacing: 0
+    });
+});
+```
+
+Edit your CSS to position the elements (check the examples in `example-*.html`).
+
+To unstick an object
+
+```javascript
+const elementSticky = $('#sticker');
+
+elementSticky.unstick();
+```
+
+## Options<a name="options"></a>
 
 - `topSpacing`: (default: `0`) Pixels between the page top and the element's top.
 - `bottomSpacing`: (default: `0`) Pixels between the page bottom and the element's bottom.
@@ -49,12 +86,12 @@ Check the `example-*.html` files for some examples.
 - `responsiveWidth`: (default: `false`) Boolean determining whether widths will be recalculated on window resize (using getWidthfrom).
 - `zIndex`: (default: `inherit`) controls z-index of the sticked element.
 
-## Methods
+## Methods<a name="methods"></a>
 
 - `sticky(options)`: Initializer. `options` is optional.
 - `sticky('update')`: Recalculates the element's position.
 
-## Events
+## Events<a name="events"></a>
 
 - `sticky-start`: When the element becomes sticky.
 - `sticky-end`: When the element returns to its original location
@@ -64,12 +101,26 @@ Check the `example-*.html` files for some examples.
 
 To subscribe to events use jquery:
 
-```html
-<script>
-  $('#sticker').on('sticky-start', function() { console.log("Started"); });
-  $('#sticker').on('sticky-end', function() { console.log("Ended"); });
-  $('#sticker').on('sticky-update', function() { console.log("Update"); });
-  $('#sticker').on('sticky-bottom-reached', function() { console.log("Bottom reached"); });
-  $('#sticker').on('sticky-bottom-unreached', function() { console.log("Bottom unreached"); });
-</script>
+```javascript
+const elementSticky = $('#sticker');
+
+elementSticky.on('sticky-start', () => {
+    console.log("Started");
+});
+
+elementSticky.on('sticky-end', () => {
+    console.log("Ended");
+});
+
+elementSticky.on('sticky-update', () => {
+    console.log("Update");
+});
+
+elementSticky.on('sticky-bottom-reached', () => {
+    console.log("Bottom reached");
+});
+
+elementSticky.on('sticky-bottom-unreached', () => {
+    console.log("Bottom unreached");
+});
 ```
