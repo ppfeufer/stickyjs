@@ -11,6 +11,6 @@
     },
     "scripts": {
         "lint": "eslint --config eslint.config.js --ext .js --ignore-pattern '*.min.js' --debug",
-        "minify": "terser stickyjs.js -o stickyjs.min.js --source-map \"url='stickyjs.min.js.map'\" --compress reduce_vars=false --mangle --format quote_style=1"
+        "minify": "terser dist/stickyjs.js -o dist/stickyjs.min.js --source-map \"base='dist/',url='stickyjs.min.js.map'\" --compress reduce_vars=false --mangle --format quote_style=1"
     }
 }
