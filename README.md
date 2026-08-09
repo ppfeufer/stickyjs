@@ -40,7 +40,7 @@ This is how it works:
 - That's it.
 
 In some cases you might need to set a fixed width to your element when it is "sticked".
-But by default (`widthFromWrapper == true`) sticky updates elements's width to the wrapper's width.
+But by default (`widthFromWrapper == true`) sticky updates element's width to the wrapper's width.
 Check the `example-*.html` files for some examples.
 
 ## Usage<a name="usage"></a>
@@ -76,8 +76,8 @@ elementSticky.unstick();
 
 ## Options<a name="options"></a>
 
-- `topSpacing`: (default: `0`) Pixels between the page top and the element's top.
-- `bottomSpacing`: (default: `0`) Pixels between the page bottom and the element's bottom.
+- `topSpacing`: (default: `0`) Pixels between the page top, and the element's top.
+- `bottomSpacing`: (default: `0`) Pixels between the page bottom, and the element's bottom.
 - `className`: (default: `'is-sticky'`) CSS class added to the element's wrapper when "sticked".
 - `wrapperClassName`: (default: `'sticky-wrapper'`) CSS class added to the wrapper.
 - `center`: (default: `false`) Boolean determining whether the sticky element should be horizontally centered in the page.
