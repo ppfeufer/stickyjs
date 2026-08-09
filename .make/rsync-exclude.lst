@@ -21,3 +21,4 @@ Makefile
 .make
 .rsync-exclude
 docs
+CODEOWNERS
