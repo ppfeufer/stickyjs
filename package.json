@@ -10,7 +10,7 @@
         "terser": "^5.48.0"
     },
     "scripts": {
-        "lint": "eslint --config eslint.config.js --ext .js --ignore-pattern '*.min.js' --debug",
+        "lint": "eslint --config eslint.config.js --ext .js --ignore-pattern '**/*.min.js' --debug",
         "minify": "terser dist/stickyjs.js -o dist/stickyjs.min.js --source-map \"base='dist/',url='stickyjs.min.js.map'\" --compress reduce_vars=false --mangle --format quote_style=1"
     }
 }

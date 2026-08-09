@@ -52,8 +52,7 @@ release-archive:
 .PHONY: help
 help::
 	@echo "  $(TEXT_UNDERLINE)Release:$(TEXT_UNDERLINE_END)"
-	@echo "    prepare-release           Prepare a new release."
-	@echo "    release-archive           Create a release archive."
-	@echo "                              The release archive ($(GENERAL__APPNAME).zip) will be created in the root"
-	@echo "                              directory of the theme."
+	@echo "    prepare-release           Prepare a new release"
+	@echo "    release-archive           Create a release archive"
+	@echo "                              The release archive ($(GENERAL__APPNAME).zip) will be created in the root directory"
 	@echo ""
