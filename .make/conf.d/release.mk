@@ -18,9 +18,9 @@ prepare-release: pot
 	rm -rf node_modules; \
 	rm package-lock.json; \
 	npm install; \
-	# Update the version in the main JS file and minify it \
-	sed -i -E "\|\* @version |s|@version .*|@version $$new_version|g" dist/stickyjs.js; \
-	make minify-js; \
+	# Update the version in the main JS file and buil the distribution files \
+	sed -i -E "\|\* @version |s|@version .*|@version $$new_version|g" src/stickyjs.js; \
+	make build; \
 	if [[ $$new_version =~ (alpha|beta) ]]; then \
 		echo "$(TEXT_COLOR_RED)$(TEXT_BOLD)Pre-release$(TEXT_RESET) version detected!"; \
 		git restore $(TRANSLATION__TEMPLATE); \
