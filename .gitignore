@@ -1,3 +1,5 @@
 /node_modules/
 /.make/config-overrides.ini
 /stickyjs.zip
+/src/stickyjs.min.js
+/src/stickyjs.min.js.map

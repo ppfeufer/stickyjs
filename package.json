@@ -10,7 +10,11 @@
         "terser": "^5.48.0"
     },
     "scripts": {
+        "copy:js": "mkdir -p dist && cp src/stickyjs.js dist/stickyjs.js",
+        "copy:sources": "npm run copy:js",
+        "build": "npm run copy:sources && npm run minify",
         "lint": "eslint --config eslint.config.js --ext .js --ignore-pattern '**/*.min.js' --debug",
-        "minify": "terser dist/stickyjs.js -o dist/stickyjs.min.js --source-map \"base='dist/',url='stickyjs.min.js.map'\" --compress reduce_vars=false --mangle --format quote_style=1"
+        "minify:js": "terser dist/stickyjs.js -o dist/stickyjs.min.js --source-map \"base='dist/',url='stickyjs.min.js.map'\" --compress reduce_vars=false --mangle --format quote_style=1",
+        "minify": "npm run minify:js"
     }
 }
