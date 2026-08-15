@@ -3,7 +3,7 @@
 /*!
  * Sticky Plugin for jQuery (modernized fork by Peter Pfeufer)
  *
- * @version 0.0.2
+ * @version 0.1.0
  * @author Peter Pfeufer
  * @license GPL-3.0 or later
  * @link https://github.com/ppfeufer/stickyjs

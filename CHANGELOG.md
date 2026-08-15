@@ -48,6 +48,8 @@ Section Order:
 
 <!-- Your changes go here -->
 
+## [0.1.0] - 2026-08-15
+
 ### Added
 
 - Callbacks for `onStick` and `onUnstick` events, which are triggered when an element becomes sticky or unsticky
@@ -87,6 +89,7 @@ Section Order:
 
 [0.0.1]: https://github.com/ppfeufer/stickyjs/commits/v0.0.1 "v0.0.1"
 [0.0.2]: https://github.com/ppfeufer/stickyjs/compare/v0.0.1...v0.0.2 "v0.0.2"
-[in development]: https://github.com/ppfeufer/stickyjs/compare/v0.0.2...HEAD "In Development"
+[0.1.0]: https://github.com/ppfeufer/stickyjs/compare/v0.0.2...v0.1.0 "v0.1.0"
+[in development]: https://github.com/ppfeufer/stickyjs/compare/v0.1.0...HEAD "In Development"
 [keep a changelog]: http://keepachangelog.com/ "Keep a Changelog"
 [semantic versioning]: http://semver.org/ "Semantic Versioning"
