@@ -48,6 +48,10 @@ Section Order:
 
 <!-- Your changes go here -->
 
+### Added
+
+- Code to disconnect the `mutationObserver` to prevent potential issues with sticky elements, which are made unsticky
+
 ### Changed
 
 - Use template literals instead of concatenation where possible
