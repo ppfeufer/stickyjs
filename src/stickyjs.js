@@ -49,12 +49,15 @@
         getWidthFrom: '',
         widthFromWrapper: true, // works only when .getWidthFrom is empty
         responsiveWidth: false,
-        zIndex: 'inherit'
+        zIndex: 'inherit',
+        scrollStickyElement: false
     };
     const $window = $(window);
     const $document = $(document);
     const sticked = [];
     let windowHeight = $window.height();
+    let lastScroll = $window.scrollTop();
+    let stickyOffest = 0;
 
     const scroller = function () {
         const scrollTop = $window.scrollTop();
@@ -69,7 +72,7 @@
             const elementTop = s.stickyWrapper.offset().top;
             const etse = elementTop - s.topSpacing - extra;
 
-            //update height in case of dynamic content
+            // update height in case of dynamic content
             s.stickyWrapper.css('height', s.stickyElement.outerHeight());
 
             if (scrollTop <= etse) {
@@ -93,6 +96,34 @@
                 } else {
                     newTop = s.topSpacing;
                 }
+
+                if (s.scrollStickyElement) {
+                    // also scroll the sticky element if it's higher from window
+                    if (s.stickyElement.outerHeight() > windowHeight) {
+                        const scrollDiff = scrollTop - lastScroll;
+                        const newStickyOffest = stickyOffest - scrollDiff;
+
+                        if (scrollDiff > 0) {
+                            //down
+                            if ((s.stickyElement.outerHeight() + stickyOffest) > windowHeight) {
+                                stickyOffest = newStickyOffest;
+
+                                if (stickyOffest < (windowHeight - s.stickyElement.outerHeight())) {
+                                    stickyOffest = windowHeight - s.stickyElement.outerHeight();
+                                }
+                            }
+
+                            newTop = stickyOffest;
+                        } else if (s.currentTop < 0) {
+                            //up
+                            newTop = stickyOffest = newStickyOffest;
+                        } else {
+                            newTop = 0;
+                        }
+                    }
+                }
+
+                lastScroll = scrollTop;
 
                 if (s.currentTop !== newTop) {
                     let newWidth;
