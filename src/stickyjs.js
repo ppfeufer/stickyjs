@@ -46,7 +46,7 @@
         className: 'is-sticky',
         wrapperClassName: 'sticky-wrapper',
         center: false,
-        getWidthFrom: '',
+        getWidthFrom: null,
         widthFromWrapper: true, // works only when .getWidthFrom is empty
         responsiveWidth: false,
         zIndex: 'inherit',
@@ -81,16 +81,16 @@
             const elementTopSpacingExtra = Math.max(0, elementTop - s.topSpacing - extra);
 
             // Update height in case of dynamic content
-            s.stickyWrapper.css('height', s.stickyElement.outerHeight());
+            s.stickyWrapper.css({height: s.stickyElement.outerHeight()});
 
             if (scrollTop <= elementTopSpacingExtra) {
                 if (s.currentTop !== null) {
                     s.stickyElement
                         .css({
-                            'width': '',
-                            'position': '',
-                            'top': '',
-                            'z-index': ''
+                            width: '',
+                            position: '',
+                            top: '',
+                            zIndex: ''
                         });
                     s.stickyElement.parent().removeClass(s.className);
                     s.stickyElement.trigger('sticky-end', [s]);
@@ -154,10 +154,13 @@
                     }
 
                     s.stickyElement
-                        .css('width', newWidth)
-                        .css('position', 'fixed')
-                        .css('top', newTop)
-                        .css('z-index', s.zIndex);
+                        .css({
+                            width: newWidth,
+                            position: 'fixed',
+                            top: newTop,
+                            zIndex: s.zIndex
+                        });
+
 
                     s.stickyElement.parent().addClass(s.className);
 
@@ -193,16 +196,20 @@
 
                 if (unstick) {
                     s.stickyElement
-                        .css('position', 'absolute')
-                        .css('top', '')
-                        .css('bottom', 0)
-                        .css('z-index', '');
+                        .css({
+                            position: 'absolute',
+                            top: '',
+                            bottom: 0,
+                            zIndex: ''
+                        });
                 } else {
                     s.stickyElement
-                        .css('position', 'fixed')
-                        .css('top', newTop)
-                        .css('bottom', '')
-                        .css('z-index', s.zIndex);
+                        .css({
+                            position: 'fixed',
+                            top: newTop,
+                            bottom: '',
+                            zIndex: s.zIndex
+                        });
                 }
             }
         }
@@ -229,7 +236,7 @@
             }
 
             if (newWidth !== null) {
-                s.stickyElement.css('width', newWidth);
+                s.stickyElement.css({width: newWidth});
             }
         }
     };
@@ -244,7 +251,7 @@
         const stickyWrapper = element.parent();
 
         if (stickyWrapper) {
-            stickyWrapper.css('height', element.outerHeight());
+            stickyWrapper.css({height: element.outerHeight()});
         }
     };
 
@@ -347,7 +354,7 @@
                 }
 
                 if (stickyElement.css('float') === 'right') {
-                    stickyElement.css({'float': 'none'}).parent().css({'float': 'right'});
+                    stickyElement.css({float: 'none'}).parent().css({float: 'right'});
                 }
 
                 o.stickyElement = stickyElement;
