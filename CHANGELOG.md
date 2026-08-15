@@ -48,6 +48,10 @@ Section Order:
 
 <!-- Your changes go here -->
 
+### Changed
+
+- Use template literals instead of concatenation where possible
+
 ## [0.0.2] - 2026-08-09
 
 ### Added

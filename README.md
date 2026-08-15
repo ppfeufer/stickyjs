@@ -9,6 +9,7 @@ ______________________________________________________________________
 - [A Bit of History](#a-bit-of-history)
 - [StickyJS in Brief](#stickyjs-in-brief)
 - [Usage](#usage)
+  - [Download](#download)
   - [Include jQuery and StickyJS](#include-jquery-and-stickyjs)
   - [Call StickyJS](#call-stickyjs)
 - [Options](#options)
@@ -44,6 +45,15 @@ But by default (`widthFromWrapper == true`) sticky updates element's width to th
 Check the `example-*.html` files for some examples.
 
 ## Usage<a name="usage"></a>
+
+### Download<a name="download"></a>
+
+You can download the latest version of StickyJS from the [releases page](https://github.com/ppfeufer/stickyjs/releases/latest/download/stickyjs.zip).
+
+> ![!IMPORTANT]
+>
+> Do not use the JS file from the `src` folder, as this is the development version and can be unstable and buggy. \
+> Use only the JS files from the `dist` folder, which is included in the release archives.
 
 ### Include jQuery and StickyJS<a name="include-jquery-and-stickyjs"></a>
 
@@ -82,8 +92,8 @@ elementSticky.unstick();
 - `wrapperClassName`: (default: `'sticky-wrapper'`) CSS class added to the wrapper.
 - `center`: (default: `false`) Boolean determining whether the sticky element should be horizontally centered in the page.
 - `getWidthFrom`: (default: `''`) Selector of element referenced to set fixed width of "sticky" element.
-- `widthFromWrapper`: (default: `true`) Boolean determining whether width of the "sticky" element should be updated to match the wrapper's width. Wrapper is a placeholder for "sticky" element while it is fixed (out of static elements flow), and its width depends on the context and CSS rules. Works only as long `getWidthForm` isn't set.
-- `responsiveWidth`: (default: `false`) Boolean determining whether widths will be recalculated on window resize (using getWidthfrom).
+- `widthFromWrapper`: (default: `true`) Boolean determining whether width of the "sticky" element should be updated to match the wrapper's width. Wrapper is a placeholder for "sticky" element while it is fixed (out of static elements flow), and its width depends on the context and CSS rules. Works only as long `getWidthFrom` isn't set.
+- `responsiveWidth`: (default: `false`) Boolean determining whether widths will be recalculated on window resize (using `getWidthFrom`).
 - `zIndex`: (default: `inherit`) controls z-index of the sticked element.
 
 ## Methods<a name="methods"></a>
