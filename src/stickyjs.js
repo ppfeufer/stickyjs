@@ -35,7 +35,7 @@
         // Browser globals
         factory(jQuery);
     }
-}(function($) {
+}(function ($) {
     'use strict';
 
     const splice = Array.prototype.splice; // save ref to original slice()
@@ -204,6 +204,8 @@
                 subtree: true,
                 childList: true
             });
+
+            $(stickyElement).data('sticky.mutationObserver', mutationObserver);
         } else {
             stickyElement.addEventListener('DOMNodeInserted', () => {
                 setWrapperHeight(stickyElement);
@@ -280,7 +282,11 @@
                 }
 
                 if (removeIdx !== -1) {
+                    const mutationObserver = $(unstickyElement).data('sticky.mutationObserver');
+                    mutationObserver.disconnect();
+
                     unstickyElement.unwrap();
+
                     clearStickyStyles(unstickyElement, {
                         'width': '',
                         'position': '',
@@ -318,7 +324,7 @@
     // Stick the selected elements.
     Object.defineProperty($.fn, 'sticky', {
         configurable: true,
-        get() {
+        get () {
             const $elements = this;
 
             return (method, ...args) => invokeStickyMethod($elements, method, ...args);
@@ -328,7 +334,7 @@
     // Unstick the selected elements.
     Object.defineProperty($.fn, 'unstick', {
         configurable: true,
-        get() {
+        get () {
             const $elements = this;
 
             return (method, ...args) => invokeUnstickMethod($elements, method, ...args);
