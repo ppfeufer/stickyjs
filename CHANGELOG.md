@@ -50,6 +50,7 @@ Section Order:
 
 ### Added
 
+- Support for scrolling sticky elements, when they are higher than the viewport height
 - Code to disconnect the `mutationObserver` to prevent potential issues with sticky
   elements, which are made unsticky
 
