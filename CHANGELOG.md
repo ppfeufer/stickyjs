@@ -50,6 +50,7 @@ Section Order:
 
 ### Added
 
+- Callbacks for `onStick` and `onUnstick` events, which are triggered when an element becomes sticky or unsticky
 - Support for scrolling sticky elements, when they are higher than the viewport height
 - Code to disconnect the `mutationObserver` to prevent potential issues with sticky
   elements, which are made unsticky

@@ -50,7 +50,11 @@
         widthFromWrapper: true, // works only when .getWidthFrom is empty
         responsiveWidth: false,
         zIndex: 'inherit',
-        scrollStickyElement: false
+        scrollStickyElement: false,
+        callback: {
+            onStick: null,
+            onUnstick: null
+        }
     };
     const $window = $(window);
     const $document = $(document);
@@ -91,6 +95,11 @@
                     s.stickyElement.parent().removeClass(s.className);
                     s.stickyElement.trigger('sticky-end', [s]);
                     s.currentTop = null;
+
+                    // Fire the onUnstick callback if it exists
+                    if (s.callback.onUnstick) {
+                        s.callback.onUnstick(s.stickyElement);
+                    }
                 }
             } else {
                 let newTop = documentHeight - s.stickyElement.outerHeight() - s.topSpacing - s.bottomSpacing - scrollTop - extra;
@@ -168,6 +177,11 @@
                     }
 
                     s.currentTop = newTop;
+
+                    // Fire the onStick callback if it exists
+                    if (s.callback.onStick) {
+                        s.callback.onStick(s.stickyElement);
+                    }
                 }
 
                 // Check if sticky has reached end of container and stop sticking

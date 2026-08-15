@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Sticky Plugin - Header Example</title>
+        <meta charset="UTF-8">
+        <title>Sticky Plugin - Callbacks Example</title>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="></script>
         <script src="../dist/stickyjs.min.js"></script>
         <script>
             $(document).ready(() => {
-                $('#header').sticky({
-                    topSpacing: 0
+                $('#sticker').sticky({
+                    topSpacing: 0,
+                    center: true,
+                    callback: {
+                        onStick: () => {
+                            console.log('Element has become sticky.');
+                        },
+                        onUnstick: () => {
+                            console.log('Element is no longer sticky.');
+                        }
+                    }
                 });
             });
         </script>
+
         <style>
             body {
                 height: 10000px;
@@ -18,18 +29,19 @@
                 padding: 0;
             }
 
-            #header {
+            #sticker {
                 background: rgb(186 218 85);
-                box-sizing: border-box;
+                border-radius: 50px;
                 color: white;
                 font-family: Droid Sans, sans-serif;
-                font-size: 18px;
+                font-size: 40px;
                 font-weight: bold;
                 line-height: 1.6em;
-                padding: 10px;
+                margin: 0 auto;
+                padding: 20px;
                 text-align: center;
                 text-shadow: 0 1px 1px rgb(0 0 0 / 20%);
-                width: 100%;
+                width: 300px;
             }
         </style>
     </head>
@@ -44,7 +56,7 @@
             pharetra ligula.
         </p>
 
-        <div id="header">
+        <div id="sticker">
             <p>This is the sticky thingy that is really cool.</p>
         </div>
 
