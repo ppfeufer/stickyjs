@@ -50,7 +50,7 @@ Check the `example-*.html` files for some examples.
 
 You can download the latest version of StickyJS from the [releases page](https://github.com/ppfeufer/stickyjs/releases/latest/download/stickyjs.zip).
 
-> ![!IMPORTANT]
+> [!IMPORTANT]
 >
 > Do not use the JS file from the `src` folder, as this is the development version and can be unstable and buggy. \
 > Use only the JS files from the `dist` folder, which is included in the release archives.
