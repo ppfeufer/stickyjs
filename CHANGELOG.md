@@ -50,10 +50,13 @@ Section Order:
 
 ### Added
 
-- Code to disconnect the `mutationObserver` to prevent potential issues with sticky elements, which are made unsticky
+- Code to disconnect the `mutationObserver` to prevent potential issues with sticky
+  elements, which are made unsticky
 
 ### Changed
 
+- Generate unique sticky wrapper IDs to avoid possible conflicts when multiple sticky
+  elements are present on the same page
 - Use template literals instead of concatenation where possible
 
 ## [0.0.2] - 2026-08-09

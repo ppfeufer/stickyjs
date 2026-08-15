@@ -192,6 +192,14 @@
         $(stickyElement).css(styles);
     };
 
+    const createUniqueId = () => {
+        if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+            return window.crypto.randomUUID();
+        }
+
+        return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    };
+
     const setupChangeListeners = (stickyElement) => {
         if (window.MutationObserver) {
             const mutationObserver = new window.MutationObserver((mutations) => {
@@ -225,19 +233,22 @@
                 const o = $.extend({}, defaults, options);
                 const stickyElement = $(element);
 
-                const stickyId = stickyElement.attr('id');
-                const wrapperId = stickyId ? `${stickyId}-${defaults.wrapperClassName}` : defaults.wrapperClassName;
+                const wrapperIdBase = 'sticky-wrapper';
+                const wrapperId = `${wrapperIdBase}-${createUniqueId()}`;
                 const wrapper = $('<div></div>')
                     .attr('id', wrapperId)
                     .addClass(o.wrapperClassName);
 
-                stickyElement.wrapAll(() => {
-                    if (stickyElement.parent(`#${wrapperId}`).length === 0) {
-                        return wrapper;
-                    }
-                });
+                // Avoid nested wrappers when sticky() is called again on the same element.
+                if (!stickyElement.parent().hasClass(o.wrapperClassName)) {
+                    stickyElement.wrapAll(() => wrapper);
+                }
 
                 const stickyWrapper = stickyElement.parent();
+
+                if (!stickyWrapper.attr('id')) {
+                    stickyWrapper.attr('id', wrapperId);
+                }
 
                 if (o.center) {
                     stickyWrapper.css({
