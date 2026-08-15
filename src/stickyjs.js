@@ -219,17 +219,18 @@
         init: ($elements, options) => {
             return $elements.each((index, element) => {
                 void index;
+
                 const o = $.extend({}, defaults, options);
                 const stickyElement = $(element);
 
                 const stickyId = stickyElement.attr('id');
-                const wrapperId = stickyId ? stickyId + '-' + defaults.wrapperClassName : defaults.wrapperClassName;
+                const wrapperId = stickyId ? `${stickyId}-${defaults.wrapperClassName}` : defaults.wrapperClassName;
                 const wrapper = $('<div></div>')
                     .attr('id', wrapperId)
                     .addClass(o.wrapperClassName);
 
                 stickyElement.wrapAll(() => {
-                    if (stickyElement.parent('#' + wrapperId).length === 0) {
+                    if (stickyElement.parent(`#${wrapperId}`).length === 0) {
                         return wrapper;
                     }
                 });
@@ -264,6 +265,7 @@
         unstick: ($elements) => {
             return $elements.each((index, element) => {
                 void index;
+
                 const unstickyElement = $(element);
 
                 let removeIdx = -1;
@@ -272,6 +274,7 @@
                 while (i-- > 0) {
                     if (sticked[i].stickyElement.get(0) === element) {
                         splice.call(sticked, i, 1);
+
                         removeIdx = i;
                     }
                 }
@@ -297,7 +300,7 @@
             return fallbackMethod($elements, method, ...args);
         }
 
-        $.error('Method ' + method + ' does not exist on jQuery.sticky');
+        $.error(`Method ${method} does not exist on jQuery.sticky`);
     };
 
     const invokeStickyMethod = createMethodInvoker(($elements, method) => methods.init($elements, method));
@@ -312,6 +315,7 @@
         window.attachEvent('onresize', resizer);
     }
 
+    // Stick the selected elements.
     Object.defineProperty($.fn, 'sticky', {
         configurable: true,
         get() {
@@ -321,6 +325,7 @@
         }
     });
 
+    // Unstick the selected elements.
     Object.defineProperty($.fn, 'unstick', {
         configurable: true,
         get() {
