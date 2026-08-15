@@ -57,6 +57,8 @@ Section Order:
 
 ### Changed
 
+- Reduced calls to `.css` by passing an object with multiple properties instead of
+  calling `.css` multiple times for each property where possible
 - Generate unique sticky wrapper IDs to avoid possible conflicts when multiple sticky
   elements are present on the same page
 - Use template literals instead of concatenation where possible
