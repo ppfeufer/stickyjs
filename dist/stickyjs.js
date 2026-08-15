@@ -3,7 +3,7 @@
 /*!
  * Sticky Plugin for jQuery (modernized fork by Peter Pfeufer)
  *
- * @version 0.0.2
+ * @version 0.1.0
  * @author Peter Pfeufer
  * @license GPL-3.0 or later
  * @link https://github.com/ppfeufer/stickyjs
@@ -15,14 +15,14 @@
  * Original Plugin:
  * Author: Anthony Garand
  * Improvements by:
- *      German M. Bravo (Kronuz)
- *      Ruud Kamphuis (ruudk)
- *      Leonardo C. Daronco (daronco)
+ *      German M. Bravo (@Kronuz)
+ *      Ruud Kamphuis (@ruudk)
+ *      Leonardo C. Daronco (@daronco)
  * Created: 02/14/2011
  * GitHub: https://github.com/garand/sticky
  */
 
-(function (factory) {
+((factory) => {
     'use strict';
 
     if (typeof define === 'function' && define.amd) {
@@ -35,7 +35,7 @@
         // Browser globals
         factory(jQuery);
     }
-}(function($) {
+})($ => {
     'use strict';
 
     const splice = Array.prototype.splice; // save ref to original slice()
@@ -46,44 +46,60 @@
         className: 'is-sticky',
         wrapperClassName: 'sticky-wrapper',
         center: false,
-        getWidthFrom: '',
+        getWidthFrom: null,
         widthFromWrapper: true, // works only when .getWidthFrom is empty
         responsiveWidth: false,
-        zIndex: 'inherit'
+        zIndex: 'inherit',
+        scrollStickyElement: false,
+        callback: {
+            onStick: null,
+            onUnstick: null
+        }
     };
     const $window = $(window);
     const $document = $(document);
     const sticked = [];
     let windowHeight = $window.height();
+    let lastScroll = $window.scrollTop();
+    let stickyOffset = 0;
 
-    const scroller = function () {
+    /**
+     * Scroll handler that updates the position of sticky elements based on the current scroll position.
+     */
+    const scroller = () => {
         const scrollTop = $window.scrollTop();
         const documentHeight = $document.height();
         const dwh = documentHeight - windowHeight;
         const extra = (scrollTop > dwh) ? dwh - scrollTop : 0;
 
-        let i = 0, l = sticked.length;
+        let i = 0;
+        let l = sticked.length;
 
         for (; i < l; i++) {
             const s = sticked[i];
             const elementTop = s.stickyWrapper.offset().top;
-            const etse = elementTop - s.topSpacing - extra;
+            const elementTopSpacingExtra = Math.max(0, elementTop - s.topSpacing - extra);
 
-            //update height in case of dynamic content
-            s.stickyWrapper.css('height', s.stickyElement.outerHeight());
+            // Update height in case of dynamic content
+            s.stickyWrapper.css({height: s.stickyElement.outerHeight()});
 
-            if (scrollTop <= etse) {
+            if (scrollTop <= elementTopSpacingExtra) {
                 if (s.currentTop !== null) {
                     s.stickyElement
                         .css({
-                            'width': '',
-                            'position': '',
-                            'top': '',
-                            'z-index': ''
+                            width: '',
+                            position: '',
+                            top: '',
+                            zIndex: ''
                         });
                     s.stickyElement.parent().removeClass(s.className);
                     s.stickyElement.trigger('sticky-end', [s]);
                     s.currentTop = null;
+
+                    // Fire the onUnstick callback if it exists
+                    if (s.callback.onUnstick) {
+                        s.callback.onUnstick(s.stickyElement);
+                    }
                 }
             } else {
                 let newTop = documentHeight - s.stickyElement.outerHeight() - s.topSpacing - s.bottomSpacing - scrollTop - extra;
@@ -93,6 +109,34 @@
                 } else {
                     newTop = s.topSpacing;
                 }
+
+                if (s.scrollStickyElement) {
+                    // Also scroll the sticky element if it's higher from window
+                    if (s.stickyElement.outerHeight() > windowHeight) {
+                        const scrollDiff = scrollTop - lastScroll;
+                        const newStickyOffset = stickyOffset - scrollDiff;
+
+                        if (scrollDiff > 0) {
+                            // Down
+                            if ((s.stickyElement.outerHeight() + stickyOffset) > windowHeight) {
+                                stickyOffset = newStickyOffset;
+
+                                if (stickyOffset < (windowHeight - s.stickyElement.outerHeight())) {
+                                    stickyOffset = windowHeight - s.stickyElement.outerHeight();
+                                }
+                            }
+
+                            newTop = stickyOffset;
+                        } else if (s.currentTop < 0) {
+                            // Up
+                            newTop = stickyOffset = newStickyOffset;
+                        } else {
+                            newTop = 0;
+                        }
+                    }
+                }
+
+                lastScroll = scrollTop;
 
                 if (s.currentTop !== newTop) {
                     let newWidth;
@@ -110,10 +154,13 @@
                     }
 
                     s.stickyElement
-                        .css('width', newWidth)
-                        .css('position', 'fixed')
-                        .css('top', newTop)
-                        .css('z-index', s.zIndex);
+                        .css({
+                            width: newWidth,
+                            position: 'fixed',
+                            top: newTop,
+                            zIndex: s.zIndex
+                        });
+
 
                     s.stickyElement.parent().addClass(s.className);
 
@@ -133,30 +180,45 @@
                     }
 
                     s.currentTop = newTop;
+
+                    // Fire the onStick callback if it exists
+                    if (s.callback.onStick) {
+                        s.callback.onStick(s.stickyElement);
+                    }
                 }
 
                 // Check if sticky has reached end of container and stop sticking
                 const stickyWrapperContainer = s.stickyWrapper.parent();
-                const unstick = (s.stickyElement.offset().top + s.stickyElement.outerHeight() >= stickyWrapperContainer.offset().top + stickyWrapperContainer.outerHeight()) && (s.stickyElement.offset().top <= s.topSpacing);
+                const unstick = (
+                    (s.stickyElement.offset().top + s.stickyElement.outerHeight() >= stickyWrapperContainer.offset().top + stickyWrapperContainer.outerHeight())
+                    && (s.stickyElement.offset().top <= s.topSpacing) // jshint ignore:line
+                );
 
                 if (unstick) {
                     s.stickyElement
-                        .css('position', 'absolute')
-                        .css('top', '')
-                        .css('bottom', 0)
-                        .css('z-index', '');
+                        .css({
+                            position: 'absolute',
+                            top: '',
+                            bottom: 0,
+                            zIndex: ''
+                        });
                 } else {
                     s.stickyElement
-                        .css('position', 'fixed')
-                        .css('top', newTop)
-                        .css('bottom', '')
-                        .css('z-index', s.zIndex);
+                        .css({
+                            position: 'fixed',
+                            top: newTop,
+                            bottom: '',
+                            zIndex: s.zIndex
+                        });
                 }
             }
         }
     };
 
-    const resizer = function () {
+    /**
+     * Resize handler that updates the width of sticky elements based on the current window size.
+     */
+    const resizer = () => {
         windowHeight = $window.height();
 
         let i = 0, l = sticked.length;
@@ -174,26 +236,61 @@
             }
 
             if (newWidth !== null) {
-                s.stickyElement.css('width', newWidth);
+                s.stickyElement.css({width: newWidth});
             }
         }
     };
 
+    /**
+     * Sets the height of the sticky wrapper to match the height of the sticky element.
+     *
+     * @param {HTMLElement} stickyElement - The sticky element for which the wrapper height should be set.
+     */
     const setWrapperHeight = (stickyElement) => {
         const element = $(stickyElement);
         const stickyWrapper = element.parent();
 
         if (stickyWrapper) {
-            stickyWrapper.css('height', element.outerHeight());
+            stickyWrapper.css({height: element.outerHeight()});
         }
     };
 
+    /**
+     * Clears the sticky styles applied to the sticky element.
+     *
+     * @param {HTMLElement} stickyElement - The sticky element from which the styles should be cleared.
+     * @param {Object} styles - An object containing the CSS styles to be cleared.
+     */
     const clearStickyStyles = (stickyElement, styles) => {
         $(stickyElement).css(styles);
     };
 
+    /**
+     * Generates a unique identifier string.
+     *
+     * @returns {`${string}-${string}-${string}-${string}-${string}`|string}
+     */
+    const createUniqueId = () => {
+        if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+            return window.crypto.randomUUID();
+        }
+
+        return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    };
+
+    /**
+     * Sets up listeners for changes in the DOM of the sticky element, and updates the wrapper height accordingly.
+     *
+     * @param {HTMLElement} stickyElement - The sticky element for which to set up change listeners.
+     */
     const setupChangeListeners = (stickyElement) => {
         if (window.MutationObserver) {
+            /**
+             * Creates a new MutationObserver to watch for changes in the DOM of the sticky element.
+             *
+             * @param {MutationRecord[]} mutations - An array of MutationRecord objects representing the changes observed.
+             * @type {MutationObserver}
+             */
             const mutationObserver = new window.MutationObserver((mutations) => {
                 if (mutations[0].addedNodes.length || mutations[0].removedNodes.length) {
                     setWrapperHeight(stickyElement);
@@ -204,6 +301,8 @@
                 subtree: true,
                 childList: true
             });
+
+            $(stickyElement).data('sticky.mutationObserver', mutationObserver);
         } else {
             stickyElement.addEventListener('DOMNodeInserted', () => {
                 setWrapperHeight(stickyElement);
@@ -215,26 +314,36 @@
         }
     };
 
+    /**
+     * An object containing methods for initializing, updating, and unsticking sticky elements.
+     *
+     * @type {{init: function(*, *): *, update: resizer, unstick: function(*): *}}
+     */
     const methods = {
+        // Initializes the sticky behavior for the selected elements.
         init: ($elements, options) => {
             return $elements.each((index, element) => {
                 void index;
+
                 const o = $.extend({}, defaults, options);
                 const stickyElement = $(element);
 
-                const stickyId = stickyElement.attr('id');
-                const wrapperId = stickyId ? stickyId + '-' + defaults.wrapperClassName : defaults.wrapperClassName;
+                const wrapperIdBase = 'sticky-wrapper';
+                const wrapperId = `${wrapperIdBase}-${createUniqueId()}`;
                 const wrapper = $('<div></div>')
                     .attr('id', wrapperId)
                     .addClass(o.wrapperClassName);
 
-                stickyElement.wrapAll(() => {
-                    if (stickyElement.parent('#' + wrapperId).length === 0) {
-                        return wrapper;
-                    }
-                });
+                // Avoid nested wrappers when sticky() is called again on the same element.
+                if (!stickyElement.parent().hasClass(o.wrapperClassName)) {
+                    stickyElement.wrapAll(() => wrapper);
+                }
 
                 const stickyWrapper = stickyElement.parent();
+
+                if (!stickyWrapper.attr('id')) {
+                    stickyWrapper.attr('id', wrapperId);
+                }
 
                 if (o.center) {
                     stickyWrapper.css({
@@ -245,7 +354,7 @@
                 }
 
                 if (stickyElement.css('float') === 'right') {
-                    stickyElement.css({'float': 'none'}).parent().css({'float': 'right'});
+                    stickyElement.css({float: 'none'}).parent().css({float: 'right'});
                 }
 
                 o.stickyElement = stickyElement;
@@ -260,10 +369,13 @@
         },
         // setWrapperHeight,
         // setupChangeListeners,
-        update: scroller,
+        // Updates the width of sticky elements based on the current window size.
+        update: resizer,
+        // Unsticks the selected elements, removing their sticky behavior.
         unstick: ($elements) => {
             return $elements.each((index, element) => {
                 void index;
+
                 const unstickyElement = $(element);
 
                 let removeIdx = -1;
@@ -272,12 +384,17 @@
                 while (i-- > 0) {
                     if (sticked[i].stickyElement.get(0) === element) {
                         splice.call(sticked, i, 1);
+
                         removeIdx = i;
                     }
                 }
 
                 if (removeIdx !== -1) {
+                    const mutationObserver = $(unstickyElement).data('sticky.mutationObserver');
+                    mutationObserver.disconnect();
+
                     unstickyElement.unwrap();
+
                     clearStickyStyles(unstickyElement, {
                         'width': '',
                         'position': '',
@@ -290,6 +407,12 @@
         }
     };
 
+    /**
+     * Creates a method invoker function that calls the appropriate method from the `methods` object based on the provided method name.
+     *
+     * @param {function} fallbackMethod - The fallback method to call if the specified method does not exist.
+     * @returns {(function(*, *, ...[*]): (*|undefined))|*}
+     */
     const createMethodInvoker = (fallbackMethod) => ($elements, method, ...args) => {
         if (methods[method]) {
             return methods[method].apply($elements, args);
@@ -297,13 +420,13 @@
             return fallbackMethod($elements, method, ...args);
         }
 
-        $.error('Method ' + method + ' does not exist on jQuery.sticky');
+        $.error(`Method ${method} does not exist on jQuery.sticky`);
     };
 
     const invokeStickyMethod = createMethodInvoker(($elements, method) => methods.init($elements, method));
     const invokeUnstickMethod = createMethodInvoker(($elements) => methods.unstick($elements));
 
-    // should be more efficient than using $window.scroll(scroller) and $window.resize(resizer):
+    // Should be more efficient than using $window.scroll(scroller) and $window.resize(resizer):
     if (window.addEventListener) {
         window.addEventListener('scroll', scroller, false);
         window.addEventListener('resize', resizer, false);
@@ -312,25 +435,42 @@
         window.attachEvent('onresize', resizer);
     }
 
+    // Stick the selected elements.
     Object.defineProperty($.fn, 'sticky', {
         configurable: true,
-        get() {
+        get () {
             const $elements = this;
 
+            /**
+             * Creates a method invoker for the sticky functionality, allowing users to call methods on the sticky elements.
+             *
+             * @param {string|Object} method - The name of the method to invoke or an object containing options for initialization.
+             * @param {...*} args - Additional arguments to pass to the method.
+             * @returns {*|undefined}
+             */
             return (method, ...args) => invokeStickyMethod($elements, method, ...args);
         }
     });
 
+    // Unstick the selected elements.
     Object.defineProperty($.fn, 'unstick', {
         configurable: true,
-        get() {
+        get () {
             const $elements = this;
 
+            /**
+             * Creates a method invoker for the unstick functionality, allowing users to call methods on the unstick elements.
+             *
+             * @param {string|Object} method - The name of the method to invoke or an object containing options for initialization.
+             * @param {...*} args - Additional arguments to pass to the method.
+             * @returns {*|undefined}
+             */
             return (method, ...args) => invokeUnstickMethod($elements, method, ...args);
         }
     });
 
+    // Initialize the scroller function on document ready to ensure that sticky elements are positioned correctly.
     $(() => {
         setTimeout(scroller, 0);
     });
-}));
+});
