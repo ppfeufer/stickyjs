@@ -48,6 +48,10 @@ Section Order:
 
 <!-- Your changes go here -->
 
+### Added
+
+- Missing callback functions for `onUpdate`, `onBottomReached`, and `onBottomUnreached`, to match the existing events
+
 ## [0.1.0] - 2026-08-15
 
 ### Added
