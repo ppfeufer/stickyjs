@@ -1,6 +1,6 @@
 {
     "name": "@ppfeufer/stickyjs",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "A lightweight JavaScript library for creating sticky elements on a webpage.",
     "type": "module",
     "devDependencies": {

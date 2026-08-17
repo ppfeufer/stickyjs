@@ -2,47 +2,45 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Sticky Plugin - Callbacks Example</title>
+        <title>Sticky Plugin - Events Example</title>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="></script>
-        <script src="../dist/stickyjs.min.js"></script>
+        <script src="../stickyjs.min.js"></script>
         <script>
             $(document).ready(() => {
                 $('#sticker').sticky({
                     topSpacing: 0,
                     center: true,
-                    callback: {
-                        onStick: element => {
-                            const domElement = element && element.jquery ? element[0] : element;
+                })
+                    .on('sticky-start', event => {
+                        const domElement = event && event.target && event.target.jquery ? event.target[0] : event.target;
 
-                            console.log('Dom Element:', domElement);
-                            console.log(`Element #${domElement.id} has become sticky.`);
-                        },
-                        onUnstick: element => {
-                            const domElement = element && element.jquery ? element[0] : element;
+                        console.log('Dom Element:', domElement);
+                        console.log(`Element #${domElement.id} has become sticky.`);
+                    })
+                    .on('sticky-end', event => {
+                        const domElement = event && event.target && event.target.jquery ? event.target[0] : event.target;
 
-                            console.log('Dom Element:', domElement);
-                            console.log(`Element #${domElement.id} is no longer sticky.`);
-                        },
-                        onUpdate: element => {
-                            const domElement = element && element.jquery ? element[0] : element;
+                        console.log('Dom Element:', domElement);
+                        console.log(`Element #${domElement.id} is no longer sticky.`);
+                    })
+                    .on('sticky-update', event => {
+                        const domElement = event && event.target && event.target.jquery ? event.target[0] : event.target;
 
-                            console.log('Dom Element:', domElement);
-                            console.log(`Element #${domElement.id} has been updated.`);
-                        },
-                        onBottomReached: element => {
-                            const domElement = element && element.jquery ? element[0] : element;
+                        console.log('Dom Element:', domElement);
+                        console.log(`Element #${domElement.id} has been updated.`);
+                    })
+                    .on('sticky-bottom-reached', event => {
+                        const domElement = event && event.target && event.target.jquery ? event.target[0] : event.target;
 
-                            console.log('Dom Element:', domElement);
-                            console.log(`Element #${domElement.id} has reached the bottom.`);
-                        },
-                        onBottomUnreached: element => {
-                            const domElement = element && element.jquery ? element[0] : element;
+                        console.log('Dom Element:', domElement);
+                        console.log(`Element #${domElement.id} has reached the bottom.`);
+                    })
+                    .on('sticky-bottom-unreached', event => {
+                        const domElement = event && event.target && event.target.jquery ? event.target[0] : event.target;
 
-                            console.log('Dom Element:', domElement);
-                            console.log(`Element #${domElement.id} has left the bottom.`);
-                        }
-                    }
-                });
+                        console.log('Dom Element:', domElement);
+                        console.log(`Element #${domElement.id} has left the bottom.`);
+                    });
             });
         </script>
 

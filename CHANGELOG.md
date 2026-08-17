@@ -48,9 +48,15 @@ Section Order:
 
 <!-- Your changes go here -->
 
+## [0.2.0] - 2026-08-17
+
 ### Added
 
 - Missing callback functions for `onUpdate`, `onBottomReached`, and `onBottomUnreached`, to match the existing events
+
+### Changed
+
+- Updated the `README.md` file to include the new callback functions and their usage
 
 ## [0.1.0] - 2026-08-15
 
@@ -94,6 +100,7 @@ Section Order:
 [0.0.1]: https://github.com/ppfeufer/stickyjs/commits/v0.0.1 "v0.0.1"
 [0.0.2]: https://github.com/ppfeufer/stickyjs/compare/v0.0.1...v0.0.2 "v0.0.2"
 [0.1.0]: https://github.com/ppfeufer/stickyjs/compare/v0.0.2...v0.1.0 "v0.1.0"
-[in development]: https://github.com/ppfeufer/stickyjs/compare/v0.1.0...HEAD "In Development"
+[0.2.0]: https://github.com/ppfeufer/stickyjs/compare/v0.1.0...v0.2.0 "v0.2.0"
+[in development]: https://github.com/ppfeufer/stickyjs/compare/v0.2.0...HEAD "In Development"
 [keep a changelog]: http://keepachangelog.com/ "Keep a Changelog"
 [semantic versioning]: http://semver.org/ "Semantic Versioning"
