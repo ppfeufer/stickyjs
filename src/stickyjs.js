@@ -53,7 +53,10 @@
         scrollStickyElement: false,
         callback: {
             onStick: null,
-            onUnstick: null
+            onUnstick: null,
+            onUpdate: null,
+            onBottomReached: null,
+            onBottomUnreached: null,
         }
     };
     const $window = $(window);
@@ -166,25 +169,40 @@
 
                     if (s.currentTop === null) {
                         s.stickyElement.trigger('sticky-start', [s]);
+
+                        // Fire the onStick callback if it exists
+                        if (s.callback.onStick) {
+                            s.callback.onStick(s.stickyElement);
+                        }
                     } else {
                         // sticky is started but it has to be repositioned
                         s.stickyElement.trigger('sticky-update', [s]);
+
+                        // Fire the onUpdate callback if it exists
+                        if (s.callback.onUpdate) {
+                            s.callback.onUpdate(s.stickyElement);
+                        }
                     }
 
                     if (s.currentTop === s.topSpacing && s.currentTop > newTop || s.currentTop === null && newTop < s.topSpacing) {
                         // just reached bottom || just started to stick but bottom is already reached
                         s.stickyElement.trigger('sticky-bottom-reached', [s]);
+
+                        // Fire the onBottomReached callback if it exists
+                        if (s.callback.onBottomReached) {
+                            s.callback.onBottomReached(s.stickyElement);
+                        }
                     } else if (s.currentTop !== null && newTop === s.topSpacing && s.currentTop < newTop) {
                         // sticky is started && sticked at topSpacing && overflowing from top just finished
                         s.stickyElement.trigger('sticky-bottom-unreached', [s]);
+
+                        // Fire the onBottomUnreached callback if it exists
+                        if (s.callback.onBottomUnreached) {
+                            s.callback.onBottomUnreached(s.stickyElement);
+                        }
                     }
 
                     s.currentTop = newTop;
-
-                    // Fire the onStick callback if it exists
-                    if (s.callback.onStick) {
-                        s.callback.onStick(s.stickyElement);
-                    }
                 }
 
                 // Check if sticky has reached end of container and stop sticking
