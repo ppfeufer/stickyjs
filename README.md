@@ -14,6 +14,7 @@ ______________________________________________________________________
   - [Call StickyJS](#call-stickyjs)
 - [Options](#options)
 - [Methods](#methods)
+- [Callback Functions](#callback-functions)
 - [Events](#events)
 
 <!-- mdformat-toc end -->
@@ -40,7 +41,7 @@ This is how it works:
 - When the target element is about to be hidden, the plugin will add the class `className` to it (and to a wrapper added as its parent), set it to `position: fixed` and calculate its new `top`, based on the element's height, the page height and the `topSpacing` and `bottomSpacing` options.
 - That's it.
 
-In some cases you might need to set a fixed width to your element when it is "sticked".
+In some cases you might need to set a fixed width to your element when it is "sticky".
 But by default (`widthFromWrapper == true`) sticky updates element's width to the wrapper's width.
 Check the `example-*.html` files for some examples.
 
@@ -86,51 +87,132 @@ elementSticky.unstick();
 
 ## Options<a name="options"></a>
 
-- `topSpacing`: (default: `0`) Pixels between the page top, and the element's top.
-- `bottomSpacing`: (default: `0`) Pixels between the page bottom, and the element's bottom.
-- `className`: (default: `'is-sticky'`) CSS class added to the element's wrapper when "sticked".
-- `wrapperClassName`: (default: `'sticky-wrapper'`) CSS class added to the wrapper.
-- `center`: (default: `false`) Boolean determining whether the sticky element should be horizontally centered in the page.
-- `getWidthFrom`: (default: `''`) Selector of element referenced to set fixed width of "sticky" element.
-- `widthFromWrapper`: (default: `true`) Boolean determining whether width of the "sticky" element should be updated to match the wrapper's width. Wrapper is a placeholder for "sticky" element while it is fixed (out of static elements flow), and its width depends on the context and CSS rules. Works only as long `getWidthFrom` isn't set.
-- `responsiveWidth`: (default: `false`) Boolean determining whether widths will be recalculated on window resize (using `getWidthFrom`).
-- `zIndex`: (default: `inherit`) controls z-index of the sticked element.
+| Option                       | Type        | Default            | Description                                                                                                                                                                                                                                                                                               |
+| ---------------------------- | ----------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `topSpacing`                 | int         | `0`                | Pixels between the page top, and the element's top.                                                                                                                                                                                                                                                       |
+| `bottomSpacing`              | int         | `0`                | Pixels between the page bottom, and the element's bottom.                                                                                                                                                                                                                                                 |
+| `className`                  | string      | `'is-sticky'`      | CSS class added to the element's wrapper when "sticky".                                                                                                                                                                                                                                                   |
+| `wrapperClassName`           | string      | `'sticky-wrapper'` | CSS class added to the wrapper.                                                                                                                                                                                                                                                                           |
+| `center`                     | boolean     | `false`            | Boolean determining whether the sticky element should be horizontally centered in the page.                                                                                                                                                                                                               |
+| `getWidthFrom`               | string      | `null`             | Selector of element referenced to set fixed width of "sticky" element.                                                                                                                                                                                                                                    |
+| `widthFromWrapper`           | boolean     | `true`             | Boolean determining whether width of the "sticky" element should be updated to match the wrapper's width. Wrapper is a placeholder for "sticky" element while it is fixed (out of static elements flow), and its width depends on the context and CSS rules. Works only as long `getWidthFrom` isn't set. |
+| `responsiveWidth`            | boolean     | `false`            | Boolean determining whether widths will be recalculated on window resize (using `getWidthFrom`).                                                                                                                                                                                                          |
+| `zIndex`                     | string\|int | `'inherit'`        | Controls z-index of the sticky element.                                                                                                                                                                                                                                                                   |
+| `scrollStickyElement`        | boolean     | `false`            | Boolean determining whether the sticky element should scroll with the page when it is sticky. If set to `true`, the sticky element will scroll with the page, but will still be constrained by the `topSpacing` and `bottomSpacing` options.                                                              |
+| `callback`                   | object      | `{}`               | Object containing callback functions for the following events:                                                                                                                                                                                                                                            |
+| `onStick(element)`           | function    | `null`             | When the element becomes sticky.                                                                                                                                                                                                                                                                          |
+| `onUnstick(element)`         | function    | `null`             | When the element returns to its original location.                                                                                                                                                                                                                                                        |
+| `onUpdate(element)`          | function    | `null`             | When the element is sticky but position must be updated for constraints reasons.                                                                                                                                                                                                                          |
+| `onBottomReached(element)`   | function    | `null`             | When the element reached the bottom space limit.                                                                                                                                                                                                                                                          |
+| `onBottomUnreached(element)` | function    | `null`             | When the element unreached the bottom space limit.                                                                                                                                                                                                                                                        |
 
 ## Methods<a name="methods"></a>
 
-- `sticky(options)`: Initializer. `options` is optional.
-- `sticky('update')`: Recalculates the element's position.
+| Method             | Description                          |
+| ------------------ | ------------------------------------ |
+| `sticky(options)`  | Initializer. `options` is optional.  |
+| `sticky('update')` | Recalculates the element's position. |
 
-## Events<a name="events"></a>
+## Callback Functions<a name="callback-functions"></a>
 
-- `sticky-start`: When the element becomes sticky.
-- `sticky-end`: When the element returns to its original location
-- `sticky-update`: When the element is sticked but position must be updated for constraints reasons
-- `sticky-bottom-reached`: When the element reached the bottom space limit
-- `sticky-bottom-unreached`: When the element unreached the bottom space limit
-
-To subscribe to events use jquery:
+| Callback Function            | Description                                                                      |
+| ---------------------------- | -------------------------------------------------------------------------------- |
+| `onStick(element)`           | When the element becomes sticky.                                                 |
+| `onUnstick(element)`         | When the element returns to its original location.                               |
+| `onUpdate(element)`          | When the element is sticky but position must be updated for constraints reasons. |
+| `onBottomReached(element)`   | When the element reached the bottom space limit.                                 |
+| `onBottomUnreached(element)` | When the element unreached the bottom space limit.                               |
 
 ```javascript
 const elementSticky = $('#sticker');
 
-elementSticky.on('sticky-start', () => {
-    console.log("Started");
-});
+$('#sticker').sticky({
+    topSpacing: 0,
+    center: true,
+    callback: {
+        onStick: element => {
+            const domElement = element && element.jquery ? element[0] : element;
 
-elementSticky.on('sticky-end', () => {
-    console.log("Ended");
-});
+            console.log('Dom Element:', domElement);
+            console.log(`Element #${domElement.id} has become sticky.`);
+        },
+        onUnstick: element => {
+            const domElement = element && element.jquery ? element[0] : element;
 
-elementSticky.on('sticky-update', () => {
-    console.log("Update");
-});
+            console.log('Dom Element:', domElement);
+            console.log(`Element #${domElement.id} is no longer sticky.`);
+        },
+        onUpdate: element => {
+            const domElement = element && element.jquery ? element[0] : element;
 
-elementSticky.on('sticky-bottom-reached', () => {
-    console.log("Bottom reached");
-});
+            console.log('Dom Element:', domElement);
+            console.log(`Element #${domElement.id} has been updated.`);
+        },
+        onBottomReached: element => {
+            const domElement = element && element.jquery ? element[0] : element;
 
-elementSticky.on('sticky-bottom-unreached', () => {
-    console.log("Bottom unreached");
+            console.log('Dom Element:', domElement);
+            console.log(`Element #${domElement.id} has reached the bottom.`);
+        },
+        onBottomUnreached: element => {
+            const domElement = element && element.jquery ? element[0] : element;
+
+            console.log('Dom Element:', domElement);
+            console.log(`Element #${domElement.id} has left the bottom.`);
+        }
+    }
 });
+```
+
+## Events<a name="events"></a>
+
+All callback functions are also available as events, which can be subscribed to using jQuery's `on` method.
+
+| Event                     | Description                                                                      |
+| ------------------------- | -------------------------------------------------------------------------------- |
+| `sticky-start`            | When the element becomes sticky.                                                 |
+| `sticky-end`              | When the element returns to its original location.                               |
+| `sticky-update`           | When the element is sticky but position must be updated for constraints reasons. |
+| `sticky-bottom-reached`   | When the element reached the bottom space limit.                                 |
+| `sticky-bottom-unreached` | When the element unreached the bottom space limit.                               |
+
+To subscribe to events use jQuery:
+
+```javascript
+const elementSticky = $('#sticker');
+
+$('#sticker').sticky({
+  topSpacing: 0,
+  center: true,
+})
+    .on('sticky-start', event => {
+        const domElement = event && event.target && event.target.jquery ? event.target[0] : event.target;
+
+        console.log('Dom Element:', domElement);
+        console.log(`Element #${domElement.id} has become sticky.`);
+    })
+    .on('sticky-end', event => {
+        const domElement = event && event.target && event.target.jquery ? event.target[0] : event.target;
+
+        console.log('Dom Element:', domElement);
+        console.log(`Element #${domElement.id} is no longer sticky.`);
+    })
+    .on('sticky-update', event => {
+        const domElement = event && event.target && event.target.jquery ? event.target[0] : event.target;
+
+        console.log('Dom Element:', domElement);
+        console.log(`Element #${domElement.id} has been updated.`);
+    })
+    .on('sticky-bottom-reached', event => {
+        const domElement = event && event.target && event.target.jquery ? event.target[0] : event.target;
+
+        console.log('Dom Element:', domElement);
+        console.log(`Element #${domElement.id} has reached the bottom.`);
+    })
+    .on('sticky-bottom-unreached', event => {
+        const domElement = event && event.target && event.target.jquery ? event.target[0] : event.target;
+
+        console.log('Dom Element:', domElement);
+        console.log(`Element #${domElement.id} has left the bottom.`);
+    });
 ```
