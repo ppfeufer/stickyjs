@@ -12,7 +12,10 @@ package-lock.json export-ignore
 .make export-ignore
 .nvmrc export-ignore
 .pre-commit-config.yaml export-ignore
+.stylelintrc.* export-ignore
 eslint.config.js export-ignore
 Makefile export-ignore
 CODEOWNERS export-ignore
+scripts export-ignore
 src export-ignore
+stickyjs export-ignore

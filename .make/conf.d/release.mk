@@ -34,19 +34,29 @@ prepare-release: pot
 # Create a new release archive
 .PHONY: release-archive
 release-archive:
-	@echo "Creating a new release archive …"
-	@rm -f $(GENERAL__APPNAME).zip
-	@rm -rf $(GENERAL__APPNAME)/
-	@rsync \
+	@echo "Creating a new release archive …"; \
+	version=$$(sed -n '1,/\*\//p' dist/masonry.js 2>/dev/null | grep -m1 -oP '@version\s+\K\S+' || true); \
+	if [ -z "$$version" ]; then \
+		# fall back to package.json version if not found in the JS file; try to read "version" value \
+		version=$$(grep -m1 -oP '"version"\s*:\s*"\K[^"]+' package.json 2>/dev/null || echo "unknown"); \
+	fi; \
+	echo "$(TEXT_BOLD)Detected version:$(TEXT_RESET) $$version"; \
+	echo ""; \
+	rm -f $(GENERAL__APPNAME)-$$version.zip; \
+	rm -rf $(GENERAL__APPNAME)/; \
+	mkdir -p $(GENERAL__APPNAME)/$$version/; \
+	rsync \
 		-ax \
 		--exclude-from=.make/rsync-exclude.lst \
 		. \
-		$(GENERAL__APPNAME)/
-	@zip \
+		$(GENERAL__APPNAME)/$$version/; \
+	zip \
 		-r \
-		$(GENERAL__APPNAME).zip \
+		$(GENERAL__APPNAME)-$$version.zip \
+		$(GENERAL__APPNAME)/; \
+	rm \
+		-rf \
 		$(GENERAL__APPNAME)/
-	@rm -rf $(GENERAL__APPNAME)/
 
 # Help message for the Release commands
 .PHONY: help

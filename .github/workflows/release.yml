@@ -30,4 +30,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           # The name of the file(s) to upload
           files: |
-            stickyjs.zip
+            stickyjs-*.zip
