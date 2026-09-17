@@ -495,6 +495,7 @@
     // <!-- START TEST ONLY -->
 
     // Expose internals for tests running under Jest so unit tests can call internal functions directly.
+    // istanbul ignore next
     if (typeof module === 'object' && module.exports && typeof process !== 'undefined' && process.env && process.env.JEST_WORKER_ID) {
         try {
             module.exports.__TEST_INTERNALS__ = {
@@ -523,7 +524,8 @@
         }
     }
 
-    // also expose on globalThis so tests that require the module can pick it up regardless
+    // Also expose on globalThis so tests that require the module can pick it up regardless.
+    // istanbul ignore next
     try {
         if (typeof globalThis !== 'undefined') {
             globalThis.__STICKY_INTERNALS__ = {
