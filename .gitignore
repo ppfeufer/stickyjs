@@ -1,7 +1,15 @@
+# Directories
+/coverage/
 /node_modules/
-/.make/config-overrides.ini
 /stickyjs/
+/src/test/js/
+
+# Files
+/.make/config-overrides.ini
 /stickyjs*.zip
+/*.min.js
+/*.min.js.map
 /src/**/*.min.js
 /src/**/*.min.js.map
-/src/test/js/
+/__tests__/**/*.min.js
+/__tests__/**/*.min.js.map

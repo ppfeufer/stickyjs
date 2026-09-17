@@ -7,6 +7,8 @@
         "@eslint/js": "^10.0.1",
         "eslint": "^10.4.1",
         "globals": "^17.6.0",
+        "jest": "^30.5.1",
+        "jest-environment-jsdom": "^30.5.1",
         "terser": "^5.48.0"
     },
     "scripts": {
@@ -15,6 +17,7 @@
         "build": "npm run copy:sources && npm run minify",
         "lint": "eslint --config eslint.config.js --ext .js --ignore-pattern '**/*.min.js' --debug",
         "minify:js": "terser dist/stickyjs.js -o dist/stickyjs.min.js --source-map \"base='dist/',url='stickyjs.min.js.map'\" --compress reduce_vars=false --mangle --format quote_style=1",
-        "minify": "npm run minify:js"
+        "minify": "npm run minify:js",
+        "test": "jest --config jest.config.js"
     }
 }

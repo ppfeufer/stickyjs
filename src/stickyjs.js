@@ -1,4 +1,4 @@
-/* global define */
+/* global define, process */
 
 /*!
  * Sticky Plugin for jQuery (modernized fork by Peter Pfeufer)
@@ -56,7 +56,7 @@
             onUnstick: null,
             onUpdate: null,
             onBottomReached: null,
-            onBottomUnreached: null,
+            onBottomUnreached: null
         }
     };
     const $window = $(window);
@@ -488,7 +488,69 @@
     });
 
     // Initialize the scroller function on document ready to ensure that sticky elements are positioned correctly.
-    $(() => {
+    $(document).ready(() => {
         setTimeout(scroller, 0);
     });
+
+    // <!-- START TEST ONLY -->
+
+    // Expose internals for tests running under Jest so unit tests can call internal functions directly.
+    if (typeof module === 'object' && module.exports && typeof process !== 'undefined' && process.env && process.env.JEST_WORKER_ID) {
+        try {
+            module.exports.__TEST_INTERNALS__ = {
+                scroller,
+                resizer,
+                setWrapperHeight,
+                setupChangeListeners,
+                createUniqueId,
+                methods,
+                sticked,
+                getLastScroll: () => lastScroll,
+                setLastScroll: (v) => {
+                    lastScroll = v;
+                },
+                getStickyOffset: () => stickyOffset,
+                setStickyOffset: (v) => {
+                    stickyOffset = v;
+                },
+                getWindowHeight: () => windowHeight,
+                setWindowHeight: (v) => {
+                    windowHeight = v;
+                }
+            };
+        } catch (e) { // eslint-disable-line no-unused-vars
+            // ignore in non-test environments
+        }
+    }
+
+    // also expose on globalThis so tests that require the module can pick it up regardless
+    try {
+        if (typeof globalThis !== 'undefined') {
+            globalThis.__STICKY_INTERNALS__ = {
+                scroller,
+                resizer,
+                setWrapperHeight,
+                setupChangeListeners,
+                createUniqueId,
+                methods,
+                sticked,
+                getLastScroll: () => lastScroll,
+                setLastScroll: (v) => {
+                    lastScroll = v;
+                },
+                getStickyOffset: () => stickyOffset,
+                setStickyOffset: (v) => {
+                    stickyOffset = v;
+                },
+                getWindowHeight: () => windowHeight,
+                setWindowHeight: (v) => {
+                    windowHeight = v;
+                }
+            };
+        }
+    } catch (e) { // eslint-disable-line no-unused-vars
+        // ignore
+    }
+
+    // <!-- END TEST ONLY -->
 });
