@@ -2,6 +2,9 @@
 
 Sticky is a jQuery plugin that gives you the ability to make any element on your page always stay visible.
 
+![Version](https://img.shields.io/github/v/release/ppfeufer/stickyjs?label=Version "Version")
+[![codecov](https://codecov.io/gh/ppfeufer/stickyjs/branch/master/graph/badge.svg?token=GNE88NUAKK)](https://codecov.io/gh/ppfeufer/stickyjs)
+
 ______________________________________________________________________
 
 <!-- mdformat-toc start --slug=github --maxlevel=6 --minlevel=2 -->
