@@ -28,11 +28,9 @@ exclude: |
   (?x)(
     LICENSE|
     .min(.css|.css.map|.js|.js.map)|
-    Sources/Libs/|
-    css/libs/|
-    .vscode/|
     .idea/|
-    vendor/|
+    dist/|
+    __tests__/|
     ISSUE_TEMPLATE/
   )
 
