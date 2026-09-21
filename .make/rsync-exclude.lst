@@ -20,7 +20,10 @@ Makefile
 CODEOWNERS
 docs/
 node_modules/
-scripts/
 src/
 stickyjs/
 vendor/
+__tests__/
+coverage/
+codecov.yml
+jest*

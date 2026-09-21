@@ -48,6 +48,11 @@ Section Order:
 
 <!-- Your changes go here -->
 
+### Added
+
+- Build script to generate the distribution files
+- Jest test suite
+
 ## [0.2.0] - 2026-08-17
 
 ### Added
