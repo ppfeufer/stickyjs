@@ -102,7 +102,7 @@ repos:
         additional_dependencies:
           # eslint itself needs to be here when using additional_dependencies.
           - eslint@10.8.0 # https://github.com/eslint/eslint/releases/latest
-          - globals@17.8.0  # https://github.com/sindresorhus/globals/releases/latest
+          - globals@17.8.0 # https://github.com/sindresorhus/globals/releases/latest
 
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
     rev: 3aa28ce11a84d747c5695ad10b81945f2400b54f  # frozen: 3.8.0
