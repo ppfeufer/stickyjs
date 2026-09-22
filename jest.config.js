@@ -9,5 +9,5 @@ export default defineConfig({
     ],
     verbose: true,
     // ignore pre-minified test files to avoid running duplicate/compiled suites
-    testPathIgnorePatterns: ['\\.min\\.js$'],
+    testPathIgnorePatterns: ['\\.min\\.js$']
 });

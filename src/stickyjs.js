@@ -35,7 +35,7 @@
         // Browser globals
         factory(jQuery);
     }
-})($ => {
+})(($) => {
     'use strict';
 
     const splice = Array.prototype.splice; // save ref to original slice()
@@ -164,7 +164,6 @@
                             zIndex: s.zIndex
                         });
 
-
                     s.stickyElement.parent().addClass(s.className);
 
                     if (s.currentTop === null) {
@@ -184,7 +183,7 @@
                         }
                     }
 
-                    if (s.currentTop === s.topSpacing && s.currentTop > newTop || s.currentTop === null && newTop < s.topSpacing) {
+                    if ((s.currentTop === s.topSpacing && s.currentTop > newTop) || (s.currentTop === null && newTop < s.topSpacing)) {
                         // just reached bottom || just started to stick but bottom is already reached
                         s.stickyElement.trigger('sticky-bottom-reached', [s]);
 
