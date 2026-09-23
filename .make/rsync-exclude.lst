@@ -23,7 +23,7 @@ node_modules/
 src/
 stickyjs/
 vendor/
-__tests__/
+tests/
 coverage/
 codecov.yml
 jest*
