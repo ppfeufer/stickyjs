@@ -50,6 +50,7 @@ Section Order:
 
 ### Added
 
+- Load guard to prevent the script from being loaded multiple times
 - Build script to generate the distribution files
 - Jest test suite
 
